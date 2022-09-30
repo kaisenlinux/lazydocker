@@ -1,0 +1,30 @@
+Author: Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>
+
+--- lazydocker-0.18.1.orig/main.go
++++ lazydocker-0.18.1/main.go
+@@ -22,9 +22,9 @@ const DEFAULT_VERSION = "unversioned"
+ 
+ var (
+ 	commit      string
+-	version     = DEFAULT_VERSION
++	version     = "0.18.1"
+ 	date        string
+-	buildSource = "unknown"
++	buildSource = "Builded by the Kaisen Linux team"
+ 
+ 	configFlag    = false
+ 	debuggingFlag = false
+@@ -35,12 +35,9 @@ func main() {
+ 	updateBuildInfo()
+ 
+ 	info := fmt.Sprintf(
+-		"%s\nDate: %s\nBuildSource: %s\nCommit: %s\nOS: %s\nArch: %s",
++		"%s\nBuildSource: %s\nArch: %s",
+ 		version,
+-		date,
+ 		buildSource,
+-		commit,
+-		runtime.GOOS,
+ 		runtime.GOARCH,
+ 	)
+ 

@@ -1,0 +1,21 @@
+Source: lazydocker
+Section: admin
+Priority: optional
+Maintainer: Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>
+Build-Depends:
+ debhelper-compat (= 13),
+ golang-go (>= 1.18),
+ dh-golang,
+Standards-Version: 4.6.1
+Homepage: https://github.com/jesseduffield/lazydocker
+Vcs-Browser: https://gitlab.com/kaisenlinux/packages/lazydocker
+Vcs-Git: https://gitlab.com/kaisenlinux/packages/lazydocker.git
+
+Package: lazydocker
+Architecture: amd64 arm64
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ golang-go (>= 1.18),
+Suggests: docker.io, docker-compose
+Description: The lazier way to manage everything docker

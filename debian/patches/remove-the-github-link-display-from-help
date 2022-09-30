@@ -1,0 +1,12 @@
+Author: Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>
+
+--- lazydocker-0.18.1.orig/main.go
++++ lazydocker-0.18.1/main.go
+@@ -43,7 +43,6 @@ func main() {
+ 
+ 	flaggy.SetName("lazydocker")
+ 	flaggy.SetDescription("The lazier way to manage everything docker")
+-	flaggy.DefaultParser.AdditionalHelpPrepend = "https://github.com/jesseduffield/lazydocker"
+ 
+ 	flaggy.Bool(&configFlag, "c", "config", "Print the current default config")
+ 	flaggy.Bool(&debuggingFlag, "d", "debug", "a boolean")
