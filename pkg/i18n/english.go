@@ -12,12 +12,13 @@ type TranslationSet struct {
 	Execute                                    string
 	Scroll                                     string
 	Close                                      string
+	Quit                                       string
 	ErrorTitle                                 string
-	RunningSubprocess                          string
 	NoViewMachingNewLineFocusedSwitchStatement string
 	OpenConfig                                 string
 	EditConfig                                 string
 	ConfirmQuit                                string
+	ConfirmUpProject                           string
 	ErrorOccurred                              string
 	ConnectionFailed                           string
 	UnattachableContainerError                 string
@@ -38,16 +39,25 @@ type TranslationSet struct {
 	Confirm                     string
 	Return                      string
 	FocusMain                   string
+	LcFilter                    string
 	StopContainer               string
 	RestartingStatus            string
 	StartingStatus              string
 	StoppingStatus              string
+	UppingProjectStatus         string
+	UppingServiceStatus         string
+	PausingStatus               string
 	RemovingStatus              string
+	DowningStatus               string
 	RunningCustomCommandStatus  string
 	RunningBulkCommandStatus    string
 	RemoveService               string
+	UpService                   string
 	Stop                        string
+	Pause                       string
 	Restart                     string
+	Down                        string
+	DownWithVolumes             string
 	Start                       string
 	Rebuild                     string
 	Recreate                    string
@@ -55,6 +65,8 @@ type TranslationSet struct {
 	NextContext                 string
 	Attach                      string
 	ViewLogs                    string
+	UpProject                   string
+	DownProject                 string
 	ServicesTitle               string
 	ContainersTitle             string
 	StandaloneContainersTitle   string
@@ -65,6 +77,7 @@ type TranslationSet struct {
 	NoContainer                 string
 	NoImages                    string
 	NoVolumes                   string
+	NoServices                  string
 	RemoveImage                 string
 	RemoveVolume                string
 	RemoveWithoutPrune          string
@@ -87,6 +100,7 @@ type TranslationSet struct {
 	ExecShell                   string
 	RunCustomCommand            string
 	ViewBulkCommands            string
+	FilterList                  string
 	OpenInBrowser               string
 	SortContainersByState       string
 
@@ -99,10 +113,15 @@ type TranslationSet struct {
 	ContainerConfigTitle      string
 	ContainerEnvTitle         string
 	NothingToDisplay          string
+	NoContainerForService     string
 	CannotDisplayEnvVariables string
 
 	No  string
 	Yes string
+
+	LcNextScreenMode string
+	LcPrevScreenMode string
+	FilterPrompt     string
 }
 
 func englishSet() TranslationSet {
@@ -112,10 +131,13 @@ func englishSet() TranslationSet {
 		RestartingStatus:           "restarting",
 		StartingStatus:             "starting",
 		StoppingStatus:             "stopping",
+		UppingServiceStatus:        "upping service",
+		UppingProjectStatus:        "upping project",
+		DowningStatus:              "downing",
+		PausingStatus:              "pausing",
 		RunningCustomCommandStatus: "running custom command",
 		RunningBulkCommandStatus:   "running bulk command",
 
-		RunningSubprocess:                          "running subprocess",
 		NoViewMachingNewLineFocusedSwitchStatement: "No view matching newLineFocused switch statement",
 
 		ErrorOccurred:                     "An error occurred! Please create an issue at https://github.com/jesseduffield/lazydocker/issues",
@@ -131,9 +153,11 @@ func englishSet() TranslationSet {
 
 		Return:                      "return",
 		FocusMain:                   "focus main panel",
+		LcFilter:                    "filter list",
 		Navigate:                    "navigate",
 		Execute:                     "execute",
 		Close:                       "close",
+		Quit:                        "quit",
 		Menu:                        "menu",
 		MenuTitle:                   "Menu",
 		Scroll:                      "scroll",
@@ -145,8 +169,12 @@ func englishSet() TranslationSet {
 		ForceRemove:                 "force remove",
 		RemoveWithVolumes:           "remove with volumes",
 		RemoveService:               "remove containers",
+		UpService:                   "up service",
 		Stop:                        "stop",
+		Pause:                       "pause",
 		Restart:                     "restart",
+		Down:                        "down project",
+		DownWithVolumes:             "down project with volumes",
 		Start:                       "start",
 		Rebuild:                     "rebuild",
 		Recreate:                    "recreate",
@@ -154,6 +182,8 @@ func englishSet() TranslationSet {
 		NextContext:                 "next tab",
 		Attach:                      "attach",
 		ViewLogs:                    "view logs",
+		UpProject:                   "up project",
+		DownProject:                 "down project",
 		RemoveImage:                 "remove image",
 		RemoveVolume:                "remove volume",
 		RemoveWithoutPrune:          "remove without deleting untagged parents",
@@ -168,6 +198,7 @@ func englishSet() TranslationSet {
 		ExecShell:                   "exec shell",
 		RunCustomCommand:            "run predefined custom command",
 		ViewBulkCommands:            "view bulk commands",
+		FilterList:                  "filter list",
 		OpenInBrowser:               "open in browser (first port is http)",
 		SortContainersByState:       "sort containers by state",
 
@@ -192,14 +223,17 @@ func englishSet() TranslationSet {
 		ContainerConfigTitle:      "Container Config",
 		ContainerEnvTitle:         "Container Env",
 		NothingToDisplay:          "Nothing to display",
+		NoContainerForService:     "No logs to show; service is not associated with a container",
 		CannotDisplayEnvVariables: "Something went wrong while displaying environment variables",
 
 		NoContainers: "No containers",
 		NoContainer:  "No container",
 		NoImages:     "No images",
 		NoVolumes:    "No volumes",
+		NoServices:   "No services",
 
 		ConfirmQuit:                "Are you sure you want to quit?",
+		ConfirmUpProject:           "Are you sure you want to 'up' your docker compose project?",
 		MustForceToRemoveContainer: "You cannot remove a running container unless you force it. Do you want to force it?",
 		NotEnoughSpace:             "Not enough space to render panels",
 		ConfirmPruneImages:         "Are you sure you want to prune all unused images?",
@@ -213,5 +247,9 @@ func englishSet() TranslationSet {
 
 		No:  "no",
 		Yes: "yes",
+
+		LcNextScreenMode: "next screen mode (normal/half/fullscreen)",
+		LcPrevScreenMode: "prev screen mode",
+		FilterPrompt:     "filter",
 	}
 }

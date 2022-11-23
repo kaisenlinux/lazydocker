@@ -57,6 +57,14 @@ type UserConfig struct {
 	// Stats determines how long lazydocker will gather container stats for, and
 	// what stat info to graph
 	Stats StatsConfig `yaml:"stats,omitempty"`
+
+	// Replacements determines how we render an item's info
+	Replacements Replacements `yaml:"replacements,omitempty"`
+
+	// For demo purposes: any list item with one of these strings as a substring
+	// will be filtered out and not displayed.
+	// Not documented because it's subject to change
+	Ignore []string `yaml:"ignore,omitempty"`
 }
 
 // ThemeConfig is for setting the colors of panels and some text.
@@ -111,6 +119,17 @@ type GuiConfig struct {
 	// By default, containers are now sorted by status. This setting allows users to
 	// use legacy behaviour instead.
 	LegacySortContainers bool `yaml:"legacySortContainers,omitempty"`
+
+	// If 0.333, then the side panels will be 1/3 of the screen's width
+	SidePanelWidth float64 `yaml:"sidePanelWidth"`
+
+	// Determines whether we show the bottom line (the one containing keybinding
+	// info and the status of the app).
+	ShowBottomLine bool `yaml:"showBottomLine"`
+
+	// When true, increases vertical space used by focused side panel,
+	// creating an accordion effect
+	ExpandFocusedSidePanel bool `yaml:"expandFocusedSidePanel"`
 }
 
 // CommandTemplatesConfig determines what commands actually get called when we
@@ -123,6 +142,17 @@ type CommandTemplatesConfig struct {
 
 	// StartService is just like the above but for starting
 	StartService string `yaml:"startService,omitempty"`
+
+	// UpService ups the service (creates and starts)
+	UpService string `yaml:"upService,omitempty"`
+
+	// Runs "docker-compose up -d"
+	Up string `yaml:"up,omitempty"`
+
+	// downs everything
+	Down string `yaml:"down,omitempty"`
+	// downs and removes volumes
+	DownWithVolumes string `yaml:"downWithVolumes,omitempty"`
 
 	// DockerCompose is for your docker-compose command. You may want to combine a
 	// few different docker-compose.yml files together, in which case you can set
@@ -158,16 +188,11 @@ type CommandTemplatesConfig struct {
 	// and ensure they're running before trying to run the service at hand
 	RecreateService string `yaml:"recreateService,omitempty"`
 
-	// ViewContainerLogs is like ViewServiceLogs but for containers
-	ViewContainerLogs string `yaml:"viewContainerLogs,omitempty"`
-
 	// AllLogs is for showing what you get from doing `docker-compose logs`. It
 	// combines all the logs together
 	AllLogs string `yaml:"allLogs,omitempty"`
 
-	// ViewAllLogs is to AllLogs what ViewContainerLogs is to ContainerLogs. It's
-	// just the command we use when you want to see all logs in a subprocess with
-	// no filtering
+	// ViewAllLogs is the command we use when you want to see all logs in a subprocess with no filtering
 	ViewAllLogs string `yaml:"viewAlLogs,omitempty"`
 
 	// DockerComposeConfig is the command for viewing the config of your docker
@@ -263,6 +288,12 @@ type CustomCommands struct {
 	Volumes []CustomCommand `yaml:"volumes,omitempty"`
 }
 
+// Replacements contains the stuff relating to rendering a container's info
+type Replacements struct {
+	// ImageNamePrefixes tells us how to replace a prefix in the Docker image name
+	ImageNamePrefixes map[string]string `yaml:"imageNamePrefixes,omitempty"`
+}
+
 // CustomCommand is a template for a command we want to run against a service or
 // container
 type CustomCommand struct {
@@ -316,10 +347,13 @@ func GetDefaultConfig() UserConfig {
 				InactiveBorderColor: []string{"default"},
 				OptionsTextColor:    []string{"blue"},
 			},
-			ShowAllContainers:    false,
-			ReturnImmediately:    false,
-			WrapMainPanel:        true,
-			LegacySortContainers: false,
+			ShowAllContainers:      false,
+			ReturnImmediately:      false,
+			WrapMainPanel:          true,
+			LegacySortContainers:   false,
+			SidePanelWidth:         0.3333,
+			ShowBottomLine:         true,
+			ExpandFocusedSidePanel: false,
 		},
 		ConfirmOnQuit: false,
 		Logs: LogsConfig{
@@ -330,6 +364,10 @@ func GetDefaultConfig() UserConfig {
 			DockerCompose:            "docker-compose",
 			RestartService:           "{{ .DockerCompose }} restart {{ .Service.Name }}",
 			StartService:             "{{ .DockerCompose }} start {{ .Service.Name }}",
+			Up:                       "{{ .DockerCompose }} up -d",
+			Down:                     "{{ .DockerCompose }} down",
+			DownWithVolumes:          "{{ .DockerCompose }} down --volumes",
+			UpService:                "{{ .DockerCompose }} up -d {{ .Service.Name }}",
 			RebuildService:           "{{ .DockerCompose }} up -d --build {{ .Service.Name }}",
 			RecreateService:          "{{ .DockerCompose }} up -d --force-recreate {{ .Service.Name }}",
 			StopService:              "{{ .DockerCompose }} stop {{ .Service.Name }}",
@@ -340,8 +378,6 @@ func GetDefaultConfig() UserConfig {
 			DockerComposeConfig:      "{{ .DockerCompose }} config",
 			CheckDockerComposeConfig: "{{ .DockerCompose }} config --quiet",
 			ServiceTop:               "{{ .DockerCompose }} top {{ .Service.Name }}",
-			// TODO: use SDK
-			ViewContainerLogs: "docker logs --timestamps --follow --since=60m {{ .Container.ID }}",
 		},
 		CustomCommands: CustomCommands{
 			Containers: []CustomCommand{},
@@ -410,6 +446,9 @@ func GetDefaultConfig() UserConfig {
 					Color:    "green",
 				},
 			},
+		},
+		Replacements: Replacements{
+			ImageNamePrefixes: map[string]string{},
 		},
 	}
 }

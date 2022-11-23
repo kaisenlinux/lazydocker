@@ -28,20 +28,30 @@ gui:
       - blue
   returnImmediately: false
   wrapMainPanel: true
+  # Side panel width as a ratio of the screen's width
+  sidePanelWidth: 0.333
+  # Determines whether we show the bottom line (the one containing keybinding
+	# info and the status of the app).
+  showBottomLine: true
+  # When true, increases vertical space used by focused side panel,
+  # creating an accordion effect
+  expandFocusedSidePanel: false
 logs:
   timestamps: false
   since: '60m'
 commandTemplates:
   dockerCompose: docker-compose
   restartService: '{{ .DockerCompose }} restart {{ .Service.Name }}'
+  up:  '{{ .DockerCompose }} up -d'
+  down: '{{ .DockerCompose }} down'
+  downWithVolumes: '{{ .DockerCompose }} down --volumes'
+  upService:  '{{ .DockerCompose }} up -d {{ .Service.Name }}'
   startService: '{{ .DockerCompose }} start {{ .Service.Name }}'
   stopService: '{{ .DockerCompose }} stop {{ .Service.Name }}'
   serviceLogs: '{{ .DockerCompose }} logs --since=60m --follow {{ .Service.Name }}'
   viewServiceLogs: '{{ .DockerCompose }} logs --follow {{ .Service.Name }}'
   rebuildService: '{{ .DockerCompose }} up -d --build {{ .Service.Name }}'
   recreateService: '{{ .DockerCompose }} up -d --force-recreate {{ .Service.Name }}'
-  viewContainerLogs: docker logs --follow --since=60m {{ .Container.ID
-    }}
   allLogs: '{{ .DockerCompose }} logs --tail=300 --follow'
   viewAlLogs: '{{ .DockerCompose }} logs'
   dockerComposeConfig: '{{ .DockerCompose }} config'
@@ -91,4 +101,15 @@ customCommands:
       attach: true
       command: 'docker exec -it {{ .Container.ID }} bash'
       serviceNames: []
+```
+
+## Replacements
+
+You can add replacements like so:
+
+```yaml
+replacements:
+  imageNamePrefixes:
+    '123456789012.dkr.ecr.us-east-1.amazonaws.com': '<prod>'
+    '923456789999.dkr.ecr.us-east-1.amazonaws.com': '<dev>'
 ```

@@ -1,3 +1,9 @@
+lazydocker (0.20.0-1kaisen) kaisen-packages; urgency=medium
+
+  * Import the 0.20.0 version
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Wed, 23 Nov 2022 17:19:44 +0100
+
 lazydocker (0.18.1-1kaisen) kaisen-packages; urgency=medium
 
   * Initial release
