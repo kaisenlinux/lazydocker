@@ -2,7 +2,6 @@ package gui
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -97,7 +96,9 @@ func (gui *Gui) getContainersPanel() *panels.SideListPanel[*commands.Container] 
 
 			return true
 		},
-		GetTableCells: presentation.GetContainerDisplayStrings,
+		GetTableCells: func(container *commands.Container) []string {
+			return presentation.GetContainerDisplayStrings(&gui.Config.UserConfig.Gui, container)
+		},
 	}
 }
 
@@ -200,12 +201,12 @@ func (gui *Gui) containerConfigStr(container *commands.Container) string {
 		output += "none\n"
 	}
 
-	data, err := json.MarshalIndent(&container.Details, "", "  ")
+	data, err := utils.MarshalIntoYaml(&container.Details)
 	if err != nil {
 		return fmt.Sprintf("Error marshalling container details: %v", err)
 	}
 
-	output += fmt.Sprintf("\nFull details:\n\n%s", string(data))
+	output += fmt.Sprintf("\nFull details:\n\n%s", utils.ColoredYamlString(string(data)))
 
 	return output
 }
@@ -409,7 +410,7 @@ func (gui *Gui) handleContainerAttach(g *gocui.Gui, v *gocui.View) error {
 		return gui.createErrorPanel(err.Error())
 	}
 
-	return gui.runSubprocess(c)
+	return gui.runSubprocessWithMessage(c, gui.Tr.DetachFromContainerShortCut)
 }
 
 func (gui *Gui) handlePruneContainers() error {

@@ -73,27 +73,33 @@ type TranslationSet struct {
 	TopTitle                    string
 	ImagesTitle                 string
 	VolumesTitle                string
+	NetworksTitle               string
 	NoContainers                string
 	NoContainer                 string
 	NoImages                    string
 	NoVolumes                   string
+	NoNetworks                  string
 	NoServices                  string
 	RemoveImage                 string
 	RemoveVolume                string
+	RemoveNetwork               string
 	RemoveWithoutPrune          string
 	RemoveWithoutPruneWithForce string
 	RemoveWithForce             string
 	PruneImages                 string
 	PruneContainers             string
 	PruneVolumes                string
+	PruneNetworks               string
 	ConfirmPruneContainers      string
 	ConfirmStopContainers       string
 	ConfirmRemoveContainers     string
 	ConfirmPruneImages          string
 	ConfirmPruneVolumes         string
+	ConfirmPruneNetworks        string
 	PruningStatus               string
 	StopService                 string
 	PressEnterToReturn          string
+	DetachFromContainerShortCut string
 	StopAllContainers           string
 	RemoveAllContainers         string
 	ViewRestartOptions          string
@@ -186,11 +192,13 @@ func englishSet() TranslationSet {
 		DownProject:                 "down project",
 		RemoveImage:                 "remove image",
 		RemoveVolume:                "remove volume",
+		RemoveNetwork:               "remove network",
 		RemoveWithoutPrune:          "remove without deleting untagged parents",
 		RemoveWithoutPruneWithForce: "remove (forced) without deleting untagged parents",
 		RemoveWithForce:             "remove (forced)",
 		PruneContainers:             "prune exited containers",
 		PruneVolumes:                "prune unused volumes",
+		PruneNetworks:               "prune unused networks",
 		PruneImages:                 "prune unused images",
 		StopAllContainers:           "stop all containers",
 		RemoveAllContainers:         "remove all containers (forced)",
@@ -210,6 +218,7 @@ func englishSet() TranslationSet {
 		StandaloneContainersTitle: "Standalone Containers",
 		ImagesTitle:               "Images",
 		VolumesTitle:              "Volumes",
+		NetworksTitle:             "Networks",
 		CustomCommandTitle:        "Custom Command:",
 		BulkCommandTitle:          "Bulk Command:",
 		ErrorTitle:                "Error",
@@ -230,20 +239,23 @@ func englishSet() TranslationSet {
 		NoContainer:  "No container",
 		NoImages:     "No images",
 		NoVolumes:    "No volumes",
+		NoNetworks:   "No networks",
 		NoServices:   "No services",
 
-		ConfirmQuit:                "Are you sure you want to quit?",
-		ConfirmUpProject:           "Are you sure you want to 'up' your docker compose project?",
-		MustForceToRemoveContainer: "You cannot remove a running container unless you force it. Do you want to force it?",
-		NotEnoughSpace:             "Not enough space to render panels",
-		ConfirmPruneImages:         "Are you sure you want to prune all unused images?",
-		ConfirmPruneContainers:     "Are you sure you want to prune all stopped containers?",
-		ConfirmStopContainers:      "Are you sure you want to stop all containers?",
-		ConfirmRemoveContainers:    "Are you sure you want to remove all containers?",
-		ConfirmPruneVolumes:        "Are you sure you want to prune all unused volumes?",
-		StopService:                "Are you sure you want to stop this service's containers?",
-		StopContainer:              "Are you sure you want to stop this container?",
-		PressEnterToReturn:         "Press enter to return to lazydocker (this prompt can be disabled in your config by setting `gui.returnImmediately: true`)",
+		ConfirmQuit:                 "Are you sure you want to quit?",
+		ConfirmUpProject:            "Are you sure you want to 'up' your docker compose project?",
+		MustForceToRemoveContainer:  "You cannot remove a running container unless you force it. Do you want to force it?",
+		NotEnoughSpace:              "Not enough space to render panels",
+		ConfirmPruneImages:          "Are you sure you want to prune all unused images?",
+		ConfirmPruneContainers:      "Are you sure you want to prune all stopped containers?",
+		ConfirmStopContainers:       "Are you sure you want to stop all containers?",
+		ConfirmRemoveContainers:     "Are you sure you want to remove all containers?",
+		ConfirmPruneVolumes:         "Are you sure you want to prune all unused volumes?",
+		ConfirmPruneNetworks:        "Are you sure you want to prune all unused networks?",
+		StopService:                 "Are you sure you want to stop this service's containers?",
+		StopContainer:               "Are you sure you want to stop this container?",
+		PressEnterToReturn:          "Press enter to return to lazydocker (this prompt can be disabled in your config by setting `gui.returnImmediately: true`)",
+		DetachFromContainerShortCut: "By default, to detach from the container press ctrl-p then ctrl-q",
 
 		No:  "no",
 		Yes: "yes",

@@ -1,3 +1,10 @@
+lazydocker (0.21.0-1kaisen) kaisen-packages; urgency=medium
+
+  * Import the 0.21.0 version
+  * Delete the remove-the-github-link-display-from-help quilt patch
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Sun, 23 Jul 2023 02:13:56 +0100
+
 lazydocker (0.20.0-1kaisen) kaisen-packages; urgency=medium
 
   * Import the 0.20.0 version

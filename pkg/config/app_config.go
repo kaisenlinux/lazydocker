@@ -71,6 +71,7 @@ type UserConfig struct {
 type ThemeConfig struct {
 	ActiveBorderColor   []string `yaml:"activeBorderColor,omitempty"`
 	InactiveBorderColor []string `yaml:"inactiveBorderColor,omitempty"`
+	SelectedLineBgColor []string `yaml:"selectedLineBgColor,omitempty"`
 	OptionsTextColor    []string `yaml:"optionsTextColor,omitempty"`
 }
 
@@ -130,6 +131,14 @@ type GuiConfig struct {
 	// When true, increases vertical space used by focused side panel,
 	// creating an accordion effect
 	ExpandFocusedSidePanel bool `yaml:"expandFocusedSidePanel"`
+
+	// ScreenMode allow user to specify which screen mode will be used on startup
+	ScreenMode string `yaml:"screenMode,omitempty"`
+
+	// Determines the style of the container status and container health display in the
+	// containers panel. "long": full words (default), "short": one or two characters,
+	// "icon": unicode emoji.
+	ContainerStatusHealthStyle string `yaml:"containerStatusHealthStyle"`
 }
 
 // CommandTemplatesConfig determines what commands actually get called when we
@@ -286,6 +295,9 @@ type CustomCommands struct {
 
 	// Volumes contains the custom commands for volumes
 	Volumes []CustomCommand `yaml:"volumes,omitempty"`
+
+	// Networks contains the custom commands for networks
+	Networks []CustomCommand `yaml:"networks,omitempty"`
 }
 
 // Replacements contains the stuff relating to rendering a container's info
@@ -306,6 +318,10 @@ type CustomCommand struct {
 	// option where the output plays in the main panel.
 	Attach bool `yaml:"attach"`
 
+	// Shell indicates whether to invoke the Command on a shell or not.
+	// Example of a bash invoked command: `/bin/bash -c "{Command}".
+	Shell bool `yaml:"shell"`
+
 	// Command is the command we want to run. We can use the go templates here as
 	// well. One example might be `{{ .DockerCompose }} exec {{ .Service.Name }}
 	// /bin/sh`
@@ -324,6 +340,7 @@ type CustomCommand struct {
 type LogsConfig struct {
 	Timestamps bool   `yaml:"timestamps,omitempty"`
 	Since      string `yaml:"since,omitempty"`
+	Tail       string `yaml:"tail,omitempty"`
 }
 
 // GetDefaultConfig returns the application default configuration NOTE (to
@@ -345,20 +362,24 @@ func GetDefaultConfig() UserConfig {
 			Theme: ThemeConfig{
 				ActiveBorderColor:   []string{"green", "bold"},
 				InactiveBorderColor: []string{"default"},
+				SelectedLineBgColor: []string{"blue"},
 				OptionsTextColor:    []string{"blue"},
 			},
-			ShowAllContainers:      false,
-			ReturnImmediately:      false,
-			WrapMainPanel:          true,
-			LegacySortContainers:   false,
-			SidePanelWidth:         0.3333,
-			ShowBottomLine:         true,
-			ExpandFocusedSidePanel: false,
+			ShowAllContainers:          false,
+			ReturnImmediately:          false,
+			WrapMainPanel:              true,
+			LegacySortContainers:       false,
+			SidePanelWidth:             0.3333,
+			ShowBottomLine:             true,
+			ExpandFocusedSidePanel:     false,
+			ScreenMode:                 "normal",
+			ContainerStatusHealthStyle: "long",
 		},
 		ConfirmOnQuit: false,
 		Logs: LogsConfig{
 			Timestamps: false,
 			Since:      "60m",
+			Tail:       "",
 		},
 		CommandTemplates: CommandTemplatesConfig{
 			DockerCompose:            "docker-compose",

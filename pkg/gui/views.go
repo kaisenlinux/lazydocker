@@ -1,10 +1,29 @@
 package gui
 
 import (
+	"os"
+
 	"github.com/fatih/color"
 	"github.com/jesseduffield/gocui"
 	"github.com/samber/lo"
 )
+
+// See https://github.com/xtermjs/xterm.js/issues/4238
+// VSCode is soon to fix this in an upcoming update.
+// Once that's done, we can scrap the HIDE_UNDERSCORES variable
+var (
+	underscoreEnvChecked bool
+	hideUnderscores      bool
+)
+
+func hideUnderScores() bool {
+	if !underscoreEnvChecked {
+		hideUnderscores = os.Getenv("TERM_PROGRAM") == "vscode"
+		underscoreEnvChecked = true
+	}
+
+	return hideUnderscores
+}
 
 type Views struct {
 	// side panels
@@ -13,6 +32,7 @@ type Views struct {
 	Containers *gocui.View
 	Images     *gocui.View
 	Volumes    *gocui.View
+	Networks   *gocui.View
 
 	// main panel
 	Main *gocui.View
@@ -51,6 +71,7 @@ func (gui *Gui) orderedViewNameMappings() []viewNameMapping {
 		{viewPtr: &gui.Views.Containers, name: "containers", autoPosition: true},
 		{viewPtr: &gui.Views.Images, name: "images", autoPosition: true},
 		{viewPtr: &gui.Views.Volumes, name: "volumes", autoPosition: true},
+		{viewPtr: &gui.Views.Networks, name: "networks", autoPosition: true},
 
 		{viewPtr: &gui.Views.Main, name: "main", autoPosition: true},
 
@@ -80,7 +101,7 @@ func (gui *Gui) createAllViews() error {
 		(*mapping.viewPtr).FgColor = gocui.ColorDefault
 	}
 
-	selectedLineBgColor := gocui.ColorBlue
+        selectedLineBgColor := GetGocuiStyle(gui.Config.UserConfig.Gui.Theme.SelectedLineBgColor)
 
 	gui.Views.Main.Wrap = gui.Config.UserConfig.Gui.WrapMainPanel
 	// when you run a docker container with the -it flags (interactive mode) it adds carriage returns for some reason. This is not docker's fault, it's an os-level default.
@@ -107,6 +128,10 @@ func (gui *Gui) createAllViews() error {
 	gui.Views.Volumes.Highlight = true
 	gui.Views.Volumes.Title = gui.Tr.VolumesTitle
 	gui.Views.Volumes.SelBgColor = selectedLineBgColor
+
+	gui.Views.Networks.Highlight = true
+	gui.Views.Networks.Title = gui.Tr.NetworksTitle
+	gui.Views.Networks.SelBgColor = selectedLineBgColor
 
 	gui.Views.Options.Frame = false
 	gui.Views.Options.FgColor = gui.GetOptionsPanelTextColor()
@@ -155,7 +180,12 @@ func (gui *Gui) getInformationContent() string {
 		return informationStr
 	}
 
-	donate := color.New(color.FgMagenta, color.Underline).Sprint(gui.Tr.Donate)
+	attrs := []color.Attribute{color.FgMagenta}
+	if !hideUnderScores() {
+		attrs = append(attrs, color.Underline)
+	}
+
+	donate := color.New(attrs...).Sprint(gui.Tr.Donate)
 	return donate + " " + informationStr
 }
 
