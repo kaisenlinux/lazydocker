@@ -16,6 +16,5 @@ Architecture: amd64 arm64
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
- golang-go (>= 1.18),
 Suggests: docker.io, docker-compose
 Description: The lazier way to manage everything docker
