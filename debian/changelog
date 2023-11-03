@@ -1,3 +1,10 @@
+lazydocker (0.23.1-1kaisen) kaisen-packages; urgency=medium
+
+  * Import the 0.23.1 version
+  * Update the quilt patch
+
+ -- Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>  Mon, 30 Oct 2023 16:53:06 +0100
+
 lazydocker (0.21.1-1kaisen) kaisen-packages; urgency=medium
 
   * Import the 0.21.1 version
