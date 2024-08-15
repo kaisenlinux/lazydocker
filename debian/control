@@ -4,9 +4,9 @@ Priority: optional
 Maintainer: Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>
 Build-Depends:
  debhelper-compat (= 13),
- golang-go (>= 1.18),
+ golang-go (>= 1.20),
  dh-golang,
-Standards-Version: 4.6.1
+Standards-Version: 4.7.2
 Homepage: https://github.com/jesseduffield/lazydocker
 Vcs-Browser: https://gitlab.com/kaisenlinux/packages/lazydocker
 Vcs-Git: https://gitlab.com/kaisenlinux/packages/lazydocker.git
