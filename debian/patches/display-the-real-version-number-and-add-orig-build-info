@@ -7,7 +7,7 @@ Author: Kevin Chevreuil - Kaisen <kaisen@kaisenlinux.org>
  var (
  	commit      string
 -	version     = DEFAULT_VERSION
-+	version     = "0.23.3"
++	version     = "0.24.1"
  	date        string
 -	buildSource = "unknown"
 +	buildSource = "Built by Kevin Chevreuil - Kaisen"
